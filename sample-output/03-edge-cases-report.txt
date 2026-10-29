@@ -1,0 +1,59 @@
+
+================ PROCESSING REPORT ================
+Source: csv(edge-cases.csv)
+
+Counts by final status:
+  RECEIVED       0
+  PENDING        1
+  PROCESSING     0
+  RETRY_PENDING  0
+  PROCESSED      4
+  DUPLICATE      0
+  FAILED         6
+
+Records (arrival order):
+  requestId   txnId      status        try failureReason        lifecycle / detail
+  REQ-33      TXN-3003   PROCESSED     2   -                    RECEIVED -> PENDING -> PROCESSING -> RETRY_PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #3 already existed (idempotent no-op)
+  REQ-32      TXN-3002   PROCESSED     1   -                    RECEIVED -> PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #2 posted
+  REQ-31      TXN-3001   PROCESSED     1   -                    RECEIVED -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #1 posted
+  REQ-32-B    TXN-3002   FAILED        0   IDEMPOTENCY_CONFLICT RECEIVED -> FAILED
+                                                                 detail: transactionId already used by REQ-32 with a different payload
+  REQ-34      TXN-3004   FAILED        1   INSUFFICIENT_FUNDS   RECEIVED -> PENDING -> PROCESSING -> FAILED
+                                                                 detail: posting would overdraw the account
+  REQ-35      TXN-3005   FAILED        1   INSUFFICIENT_FUNDS   RECEIVED -> PENDING -> PROCESSING -> FAILED
+                                                                 detail: posting would overdraw the account
+  REQ-36      TXN-3006   FAILED        3   RETRY_EXHAUSTED      RECEIVED -> PENDING -> PROCESSING -> RETRY_PENDING -> PROCESSING -> RETRY_PENDING -> PROCESSING -> FAILED
+                                                                 detail: gave up after 3 attempts; last error: simulated ledger timeout before commit
+  REQ-37      TXN-3007   FAILED        0   VALIDATION_ERROR     RECEIVED -> FAILED
+                                                                 detail: amount must have at most 2 decimal places; currency must be a 3-letter upper-case code
+  REQ-38      TXN-3008   PROCESSED     1   -                    RECEIVED -> PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #4 posted
+  REQ-310     TXN-3010   PENDING       0   -                    RECEIVED -> PENDING
+                                                                 detail: waiting for earlier sequence in partition *
+  -           -          FAILED        0   VALIDATION_ERROR     RECEIVED -> FAILED
+                                                                 detail: unparseable record: expected 9 columns but found 4
+
+Ordering gaps (parked requests still waiting):
+  partition=* nextExpected=9 parked=[10] missing=[9]
+
+Ledger: 4 entries; balances (masked):
+  ****301:INR      10
+
+Metrics:
+  deliveriesReceived     12
+  rejectedByValidation   2
+  replayedDeliveries     1
+  duplicatesDetected     0
+  idempotencyConflicts   1
+  parkedOutOfOrder       7
+  processingAttempts     10
+  retriesScheduled       3
+  processed              4
+  idempotentLedgerNoOps  1
+  failed                 6
+  redrives               0
+===================================================
+JSON report written to sample-output/03-edge-cases-report.json

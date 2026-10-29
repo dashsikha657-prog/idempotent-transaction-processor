@@ -1,0 +1,48 @@
+
+================ PROCESSING REPORT ================
+Source: csv(sample-transactions.csv)
+
+Counts by final status:
+  RECEIVED       0
+  PENDING        0
+  PROCESSING     0
+  RETRY_PENDING  0
+  PROCESSED      3
+  DUPLICATE      1
+  FAILED         2
+
+Records (arrival order):
+  requestId   txnId      status        try failureReason        lifecycle / detail
+  REQ-2       TXN-2002   PROCESSED     1   -                    RECEIVED -> PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #2 posted
+  REQ-1       TXN-2001   PROCESSED     1   -                    RECEIVED -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #1 posted
+  REQ-2-DUP   TXN-2002   DUPLICATE     0   -                    RECEIVED -> DUPLICATE
+                                                                 detail: duplicate of REQ-2 (owner status PROCESSED)
+  REQ-3       TXN-2003   PROCESSED     1   -                    RECEIVED -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #3 posted
+  REQ-4       TXN-2004   FAILED        0   VALIDATION_ERROR     RECEIVED -> FAILED
+                                                                 detail: amount must be greater than zero
+  REQ-5       TXN-2005   FAILED        3   RETRY_EXHAUSTED      RECEIVED -> PROCESSING -> RETRY_PENDING -> PROCESSING -> RETRY_PENDING -> PROCESSING -> FAILED
+                                                                 detail: gave up after 3 attempts; last error: simulated ledger timeout before commit
+
+Ordering gaps (parked requests still waiting):
+  none
+
+Ledger: 3 entries; balances (masked):
+  ****201:INR      85
+
+Metrics:
+  deliveriesReceived     6
+  rejectedByValidation   1
+  replayedDeliveries     0
+  duplicatesDetected     1
+  idempotencyConflicts   0
+  parkedOutOfOrder       1
+  processingAttempts     6
+  retriesScheduled       2
+  processed              3
+  idempotentLedgerNoOps  0
+  failed                 2
+  redrives               0
+===================================================

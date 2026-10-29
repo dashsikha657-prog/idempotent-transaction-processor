@@ -1,0 +1,10 @@
+ts=2026-10-29T11:35:23.898032496Z level=INFO event=BATCH_STARTED source=csv(sample-transactions.csv)
+ts=2026-10-29T11:35:23.932613184Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-2 transactionId=TXN-2002 sequence=2 partition=*
+ts=2026-10-29T11:35:23.950709270Z level=INFO event=PROCESSED requestId=REQ-1 transactionId=TXN-2001 type=CREDIT account=****201 attempt=1 ledgerEntry=1 idempotentNoOp=false
+ts=2026-10-29T11:35:23.952110730Z level=INFO event=PROCESSED requestId=REQ-2 transactionId=TXN-2002 type=DEBIT account=****201 attempt=1 ledgerEntry=2 idempotentNoOp=false
+ts=2026-10-29T11:35:23.973448201Z level=INFO event=DUPLICATE_DETECTED requestId=REQ-2-DUP transactionId=TXN-2002 duplicateOf=REQ-2 ownerStatus=PROCESSED
+ts=2026-10-29T11:35:23.974007753Z level=INFO event=PROCESSED requestId=REQ-3 transactionId=TXN-2003 type=CREDIT account=****201 attempt=1 ledgerEntry=3 idempotentNoOp=false
+ts=2026-10-29T11:35:23.974732903Z level=WARN event=REJECTED_INVALID requestId=REQ-4 transactionId=TXN-2004 source="sample-transactions.csv:line 8" errors="amount must be greater than zero"
+ts=2026-10-29T11:35:23.979793844Z level=WARN event=RETRY_SCHEDULED requestId=REQ-5 transactionId=TXN-2005 attempt=1 maxAttempts=3 delayMs=100 cause="simulated ledger timeout before commit"
+ts=2026-10-29T11:35:24.078082440Z level=INFO event=PROCESSED requestId=REQ-5 transactionId=TXN-2005 type=CREDIT account=****203 attempt=2 ledgerEntry=4 idempotentNoOp=false
+ts=2026-10-29T11:35:24.084461987Z level=INFO event=BATCH_COMPLETED source=csv(sample-transactions.csv) processed=4 duplicate=1 failed=1 pending=0

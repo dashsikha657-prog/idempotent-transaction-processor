@@ -1,0 +1,50 @@
+
+================ PROCESSING REPORT ================
+Source: csv(sample-transactions.csv)
+
+Counts by final status:
+  RECEIVED       0
+  PENDING        0
+  PROCESSING     0
+  RETRY_PENDING  0
+  PROCESSED      4
+  DUPLICATE      1
+  FAILED         1
+
+Records (arrival order):
+  requestId   txnId      status        try failureReason        lifecycle / detail
+  REQ-2       TXN-2002   PROCESSED     1   -                    RECEIVED -> PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #2 posted
+  REQ-1       TXN-2001   PROCESSED     1   -                    RECEIVED -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #1 posted
+  REQ-2-DUP   TXN-2002   DUPLICATE     0   -                    RECEIVED -> DUPLICATE
+                                                                 detail: duplicate of REQ-2 (owner status PROCESSED)
+  REQ-3       TXN-2003   PROCESSED     1   -                    RECEIVED -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #3 posted
+  REQ-4       TXN-2004   FAILED        0   VALIDATION_ERROR     RECEIVED -> FAILED
+                                                                 detail: amount must be greater than zero
+  REQ-5       TXN-2005   PROCESSED     2   -                    RECEIVED -> PROCESSING -> RETRY_PENDING -> PROCESSING -> PROCESSED
+                                                                 detail: ledger entry #4 posted
+
+Ordering gaps (parked requests still waiting):
+  none
+
+Ledger: 4 entries; balances (masked):
+  ****201:INR      85
+  ****203:INR      500
+
+Metrics:
+  deliveriesReceived     6
+  rejectedByValidation   1
+  replayedDeliveries     0
+  duplicatesDetected     1
+  idempotencyConflicts   0
+  parkedOutOfOrder       1
+  processingAttempts     5
+  retriesScheduled       1
+  processed              4
+  idempotentLedgerNoOps  0
+  failed                 1
+  redrives               0
+===================================================
+JSON report written to sample-output/01-suggested-data-report.json

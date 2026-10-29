@@ -1,0 +1,23 @@
+ts=2026-10-29T11:35:28.641585465Z level=INFO event=BATCH_STARTED source=csv(edge-cases.csv)
+ts=2026-10-29T11:35:28.665811074Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-33 transactionId=TXN-3003 sequence=3 partition=*
+ts=2026-10-29T11:35:28.666106725Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-32 transactionId=TXN-3002 sequence=2 partition=*
+ts=2026-10-29T11:35:28.674855714Z level=INFO event=PROCESSED requestId=REQ-31 transactionId=TXN-3001 type=CREDIT account=****301 attempt=1 ledgerEntry=1 idempotentNoOp=false
+ts=2026-10-29T11:35:28.676176654Z level=INFO event=PROCESSED requestId=REQ-32 transactionId=TXN-3002 type=CREDIT account=****301 attempt=1 ledgerEntry=2 idempotentNoOp=false
+ts=2026-10-29T11:35:28.679921384Z level=WARN event=RETRY_SCHEDULED requestId=REQ-33 transactionId=TXN-3003 attempt=1 maxAttempts=3 delayMs=100 cause="simulated lost acknowledgement after commit"
+ts=2026-10-29T11:35:28.699753607Z level=INFO event=REPLAY_IGNORED requestId=REQ-31 transactionId=TXN-3001 currentStatus=PROCESSED
+ts=2026-10-29T11:35:28.700782530Z level=ERROR event=IDEMPOTENCY_CONFLICT requestId=REQ-32-B transactionId=TXN-3002 ownerRequestId=REQ-32
+ts=2026-10-29T11:35:28.701041966Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-34 transactionId=TXN-3004 sequence=4 partition=*
+ts=2026-10-29T11:35:28.701277005Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-35 transactionId=TXN-3005 sequence=5 partition=*
+ts=2026-10-29T11:35:28.701458852Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-36 transactionId=TXN-3006 sequence=6 partition=*
+ts=2026-10-29T11:35:28.701665401Z level=WARN event=REJECTED_INVALID requestId=REQ-37 transactionId=TXN-3007 source="edge-cases.csv:line 19" errors="amount must have at most 2 decimal places; currency must be a 3-letter upper-case code"
+ts=2026-10-29T11:35:28.702260640Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-38 transactionId=TXN-3008 sequence=8 partition=*
+ts=2026-10-29T11:35:28.702408135Z level=INFO event=PARKED_OUT_OF_ORDER requestId=REQ-310 transactionId=TXN-3010 sequence=10 partition=*
+ts=2026-10-29T11:35:28.702607442Z level=WARN event=REJECTED_INVALID requestId=- transactionId=- source="edge-cases.csv:line 25" errors="unparseable record: expected 9 columns but found 4"
+ts=2026-10-29T11:35:28.778514665Z level=INFO event=PROCESSED requestId=REQ-33 transactionId=TXN-3003 type=DEBIT account=****301 attempt=2 ledgerEntry=3 idempotentNoOp=true
+ts=2026-10-29T11:35:28.779354543Z level=ERROR event=FAILED_BUSINESS_RULE requestId=REQ-34 transactionId=TXN-3004 reason=INSUFFICIENT_FUNDS message="posting would overdraw the account"
+ts=2026-10-29T11:35:28.779529458Z level=ERROR event=FAILED_BUSINESS_RULE requestId=REQ-35 transactionId=TXN-3005 reason=INSUFFICIENT_FUNDS message="posting would overdraw the account"
+ts=2026-10-29T11:35:28.779823318Z level=WARN event=RETRY_SCHEDULED requestId=REQ-36 transactionId=TXN-3006 attempt=1 maxAttempts=3 delayMs=100 cause="simulated ledger timeout before commit"
+ts=2026-10-29T11:35:28.879947298Z level=WARN event=RETRY_SCHEDULED requestId=REQ-36 transactionId=TXN-3006 attempt=2 maxAttempts=3 delayMs=200 cause="simulated ledger timeout before commit"
+ts=2026-10-29T11:35:29.080129504Z level=ERROR event=FAILED_RETRY_EXHAUSTED requestId=REQ-36 transactionId=TXN-3006 attempts=3 cause="simulated ledger timeout before commit"
+ts=2026-10-29T11:35:29.080970759Z level=INFO event=PROCESSED requestId=REQ-38 transactionId=TXN-3008 type=REVERSAL account=****301 attempt=1 ledgerEntry=4 idempotentNoOp=false
+ts=2026-10-29T11:35:29.092884710Z level=INFO event=BATCH_COMPLETED source=csv(edge-cases.csv) processed=4 duplicate=0 failed=6 pending=1
